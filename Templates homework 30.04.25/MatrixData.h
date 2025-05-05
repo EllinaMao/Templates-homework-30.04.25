@@ -13,7 +13,7 @@ private:
 
     void AllocateMemory();
     void FreeMemory();
-
+    //
 public:
     Matrix();
     Matrix(size_t rows, size_t columns);
