@@ -66,5 +66,7 @@ inline void MatrixIO<T>::Output(const Matrix<T>& matrix)
         }
         cout << endl;
     }
+    cout <<"----------------------------------------" << endl;
+
 }
 

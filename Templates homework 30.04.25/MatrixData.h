@@ -33,9 +33,67 @@ public:
     void SetCols(size_t columns);
     void FillWithRandomValues(T min, T max);
 
+    friend Matrix<T> operator+(const Matrix<T>& lhs, const Matrix<T>& rhs) {
+        if (lhs.GetRows() != rhs.GetRows() || lhs.GetColumns() != rhs.GetColumns()) {
+            return Matrix<T>(0, 0); // Возвращаем пустую матрицу с нулевыми размерами
+        }
+
+        Matrix<T> result(lhs.GetRows(), lhs.GetColumns());
+        for (size_t i = 0; i < lhs.GetRows(); ++i) {
+            for (size_t j = 0; j < lhs.GetColumns(); ++j) {
+                result(i, j) = lhs(i, j) + rhs(i, j);
+            }
+        }
+        return result;
+    }
+
+    friend Matrix<T> operator-(const Matrix<T>& lhs, const Matrix<T>& rhs) {
+        if (lhs.GetRows() != rhs.GetRows() || lhs.GetColumns() != rhs.GetColumns()) {
+            return Matrix<T>(0, 0); // Возвращаем пустую матрицу
+        }
+
+        Matrix<T> result(lhs.GetRows(), lhs.GetColumns());
+        for (size_t i = 0; i < lhs.GetRows(); ++i) {
+            for (size_t j = 0; j < lhs.GetColumns(); ++j) {
+                result(i, j) = lhs(i, j) - rhs(i, j);
+            }
+        }
+        return result;
+    }
+
+
+
+    friend Matrix operator*(const Matrix& lhs, const Matrix& rhs) {
+        if (lhs.GetColumns() != rhs.GetRows()) {
+            return Matrix<T>(0, 0); // Возвращаем пустую матрицу
+        }
+
+        Matrix<T> result(lhs.GetRows(), rhs.GetColumns());
+        for (size_t i = 0; i < lhs.GetRows(); ++i) {
+            for (size_t j = 0; j < rhs.GetColumns(); ++j) {
+                result(i, j) = 0;
+                for (size_t k = 0; k < lhs.GetColumns(); ++k) {
+                    result(i, j) += lhs(i, k) * rhs(k, j);
+                }
+            }
+        }
+        return result;
+    }
+
+    friend Matrix operator/(const Matrix& lhs, const T& scalar) {
+        if (scalar == 0) {
+            return Matrix<T>(0, 0); // Возвращаем пустую матрицу
+        }
+
+        Matrix<T> result(lhs.GetRows(), lhs.GetColumns());
+        for (size_t i = 0; i < lhs.GetRows(); ++i) {
+            for (size_t j = 0; j < lhs.GetColumns(); ++j) {
+                result(i, j) = lhs(i, j) / scalar;
+            }
+        }
+        return result;
+    }
 };
-
-
 
 template <typename T>
 Matrix<T>::Matrix() : mRows(5), mColumns(5) {
